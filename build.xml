@@ -1,0 +1,33 @@
+<?xml version = "1.0" encoding="UTF-8"?>
+<project name="FRC Image Tools" default="compile.jar">
+  <property name="version" value="current"/>
+  <property file="${user.home}/wpilib/java/${version}/ant/build.properties"/>
+  <property name="build.dir" value="build"/>
+  <property name="src.dir" value="src"/>
+  <target name="compile.class"
+          description="Compile the source code.">
+    <echo message="Compiling FRC Image Tools..."/>
+    <mkdir dir="${build.dir}" />
+    <path id="classpath.path">
+      <fileset file="${opencv.jar}" />
+    </path>
+    <pathconvert property="classpathProp"
+                 refid="classpath.path" />
+    <echo message="[athena-compile] Compiling ${src.dir} with classpath=${classpathProp} to ${build.dir}" />
+    <javac srcdir="${src.dir}"
+           destdir="${build.dir}"
+           includeAntRuntime="no"
+           includeJavaRuntime="no"
+           classpathref="classpath.path"
+           target="${ant.java.version}"
+           source="${ant.java.version}"
+           compiler="javac${ant.java.version}"
+           debug="true"></javac>
+  </target>
+  <target name="compile.jar" depends="compile.class">
+    <echo message="Compiling imgtools.jar..."/>
+    <jar destfile="imgtools.jar"
+      basedir="${build.dir}"
+      includes="org/team6204/frc/imgtools/*"/>
+    </target>
+</project>
