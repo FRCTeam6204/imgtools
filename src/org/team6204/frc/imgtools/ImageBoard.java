@@ -22,11 +22,11 @@ public class ImageBoard {
      * element and is used as the background, and the others are associated with ImageProperties in
      * props at the same index.
      */
-    public Mat draw(Mat[] imgs) throws ImageAssociationException {
+    public Mat draw(Mat[] imgs) throws IllegalStateException {
         int matLen = imgs.length;
         int expectedMatLen = props.length + 1;
         if (matLen != expectedMatLen) {
-            throw new ImageAssociationException
+            throw new IllegalStateException
                     ("Length of Mat[] imgs incompatible with ImageProperties[] props: "
                      + matLen + " != " + expectedMatLen);
         }
@@ -61,13 +61,6 @@ public class ImageBoard {
         } else {
             double scaleFactor = prop.getScaleFactor();
             return new Size(size.width * scaleFactor, size.height * scaleFactor);
-        }
-    }
-
-    @SuppressWarnings("serial")
-    private class ImageAssociationException extends Exception {
-        public ImageAssociationException(String message) {
-            super(message);
         }
     }
 
