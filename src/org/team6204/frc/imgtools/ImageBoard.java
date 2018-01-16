@@ -12,9 +12,14 @@ import org.opencv.imgproc.Imgproc;
 
 public class ImageBoard {
     private ImageProperties[] props;
+    private Mat[] newMats;
 
     public ImageBoard(ImageProperties[] props) {
         this.props = props;
+        newMats = new Mat[this.props.length + 1];
+        for (int i = 0; i < newMats.length; i++) {
+            newMats[i] = new Mat();
+        }
     }
 
     /**
@@ -24,15 +29,16 @@ public class ImageBoard {
      */
     public Mat draw(Mat[] imgs) throws IllegalStateException {
         int matLen = imgs.length;
-        int expectedMatLen = props.length + 1;
+        int expectedMatLen = newMats.length;
         if (matLen != expectedMatLen) {
             throw new IllegalStateException
                     ("Length of Mat[] imgs incompatible with ImageProperties[] props: "
                      + matLen + " != " + expectedMatLen);
         }
 
-        Mat[] newMats = new Mat[matLen];
-        for (int i = 0; i < matLen; i++) newMats[i] = imgs[i].clone();
+        for (int i = 0; i < matLen; i++) {
+            imgs[i].copyTo(newMats[i]);
+        }
         Mat root = newMats[0];
 
         for (int img = 0; img < props.length; img++) {
